@@ -10,16 +10,17 @@ import { getMainDefinition } from 'apollo-utilities'
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+require("dotenv").config();
 
 const wsLink = new WebSocketLink({
 
-    uri: process.env.Subscriptions_API.toString(),
+    uri: process.env.REACT_APP_Subscriptions_API,
     options: {
         reconnect: true
     }
 })
 
-const httpLink = new HttpLink({ uri: process.env.Simple_API.toString() })
+const httpLink = new HttpLink({ uri: process.env.REACT_APP_Simple_API })
 
 const link = split(
 
