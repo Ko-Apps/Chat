@@ -1,0 +1,3 @@
+targets:
+  chatty: shared-eu-west-1/cjr9bnspi4xqq019681ainb0k
+  default: chatty
