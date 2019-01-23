@@ -19,6 +19,8 @@ class App extends Component {
     // when page loads
     const from = window.prompt('username');
     from && this.setState({ from });
+
+    this._subscribeToNewChats();
   }
 
   _createChat = async e => {
@@ -29,6 +31,35 @@ class App extends Component {
       });
       this.setState({ content: '' });
     }
+  };
+
+  _subscribeToNewChats = () => {
+    this.props.allChatsQuery.subscribeToMore({
+      document: gql`
+          subscription {
+            Chat(filter: { mutation_in: [CREATED] }) {
+              node {
+                id
+                from
+                content
+                createdAt
+              }
+            }
+          }
+        `,
+
+      updateQuery: (previous, { subscriptionData }) => {
+        const newChatLinks = [
+          ...previous.allChats,
+          subscriptionData.data.Chat.node
+        ];
+        const result = {
+          ...previous,
+          allChats: newChatLinks
+        };
+        return result;
+      }
+    });
   };
 
   render() {
